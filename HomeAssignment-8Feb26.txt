@@ -1,0 +1,72 @@
+OpenAI models:
+
+1)GPT -5 Nano -
+	Context window - 400K
+	input token - $0.05/M 
+	output token - $0.40/M
+
+2)gpt-oss-120b - 
+	Context window - 131K
+	input token - $0.039/M 
+	output token - $0.19/M
+
+3)GPT - 5.2 - 
+	Context window - 400K
+	input token - $1.75/M 
+	output token - $14/M
+
+
+Claude Models:
+
+1)Claude Sonnet 4.6-
+	Context window - 1,000,000
+	input token - $3/M 
+	output token - $15/M
+2)Claude Opus 4.6 - 
+	Context window - 1,000,000
+	input token - $3/M 
+	output token - $15/M
+3)Claude Opus 4:
+	Context window - 200,000
+	input token - $15/M 
+	output token - $75/M
+
+Qwen Models:
+
+1)Qwen3.5 Plus 2026-02-15 - 
+	Context window - 1,000,000
+	input token - $0.40/M 
+	output token - $2.40/M
+2)Qwen3.5 397B A17B -
+	Context window - 262,144
+	input token - $0.15/M 
+	output token - $1/M
+3)Qwen3 Max Thinking - 
+	Context window - 262,144
+	input token - $1.20/M 
+	output token - $6/M
+
+
+Moderation models In GROQ - 
+
+Policy-Following Models:
+
+1)GPT-OSS-Safeguard 20B
+ - A reasoning model from OpenAI for customizable Trust & Safety workflows with bring-your-own-policy capabilities
+Prebaked Safety Models:
+
+2)Llama Prompt Guard 2 (86M)
+ - A lightweight prompt injection detection model
+3)Llama Prompt Guard 2 (22M)
+ - An ultra-lightweight prompt injection detection model
+	
+
+	
+
+	 
+	
+	
+	
+
+	
+
