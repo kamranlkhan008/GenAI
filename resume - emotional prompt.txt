@@ -1,0 +1,133 @@
+create a resume for someone with 5 years of experience in manual and automation training.Creating executing testcases,logging bugs.Selenium with java and testng.you better not mess it up and the resume should stand out.dont dissapoint me
+
+[Your Name]
+
+📍 City, State • 📞 Phone • ✉ Email • 🔗 LinkedIn/GitHub
+
+PROFESSIONAL SUMMARY
+
+Results-driven QA Automation Engineer with 5+ years of experience in manual and automated testing across web applications. Proven expertise in designing, creating, and executing test cases, defect lifecycle management, and building scalable automation frameworks using Selenium with Java and TestNG. Strong collaborator with developers and product teams to ensure high-quality releases. Recognized for improving regression coverage, reducing testing time, and delivering stable, reliable software.
+
+CORE SKILLS
+
+Testing Expertise
+
+Manual Testing (Functional, Regression, Smoke, UAT)
+
+Test Case Design & Execution
+
+Bug Tracking & Defect Lifecycle
+
+Test Planning & Reporting
+
+Automation
+
+Selenium WebDriver
+
+Java Automation Frameworks
+
+TestNG Framework
+
+Data-Driven Testing
+
+Page Object Model (POM)
+
+Tools & Technologies
+
+Maven / Gradle
+
+Git / Version Control
+
+JIRA / Bug Tracking Tools
+
+Jenkins (CI/CD basics)
+
+API validation (basic exposure)
+
+Methodologies
+
+Agile / Scrum
+
+SDLC & STLC
+
+Cross-team collaboration
+
+PROFESSIONAL EXPERIENCE
+QA Automation Engineer
+
+[Company Name] — [Location]
+MM/YYYY – Present
+
+Designed and executed comprehensive manual test cases for functional, regression, and system testing.
+
+Automated critical regression scenarios using Selenium WebDriver with Java and TestNG.
+
+Built reusable automation components following Page Object Model to improve maintainability.
+
+Logged, tracked, and verified defects using JIRA, ensuring timely resolution.
+
+Collaborated with developers and product teams to clarify requirements and edge cases.
+
+Reduced regression testing time by X% through automation initiatives.
+
+Performed cross-browser validation to ensure application consistency.
+
+Software Test Engineer
+
+[Previous Company Name] — [Location]
+MM/YYYY – MM/YYYY
+
+Created detailed test scenarios based on business requirements.
+
+Executed manual test cycles and documented results for release validation.
+
+Identified and reported defects with clear reproduction steps.
+
+Supported automation framework execution and test data preparation.
+
+Participated in sprint planning and daily Agile ceremonies.
+
+Improved defect detection efficiency through structured exploratory testing.
+
+KEY ACHIEVEMENTS
+
+Increased automation coverage, reducing manual regression effort significantly.
+
+Identified high-impact defects before production releases.
+
+Enhanced test documentation practices adopted by the QA team.
+
+Recognized for reliability and consistent delivery under tight deadlines.
+
+AUTOMATION FRAMEWORK HIGHLIGHTS
+
+Selenium + Java + TestNG framework implementation
+
+Modular test architecture using Page Object Model
+
+Parameterized and reusable test design
+
+Test execution reporting and debugging support
+
+EDUCATION
+
+Bachelor’s Degree in [Your Field]
+[University Name]
+
+CERTIFICATIONS (Optional)
+
+Software Testing Certification
+
+Automation Testing Certification
+
+ADDITIONAL STRENGTHS
+
+Strong analytical and debugging skills
+
+Attention to detail
+
+Excellent communication
+
+Team collaboration mindset
+
+Continuous learning attitude
