@@ -1,0 +1,69 @@
+
+Feature: Facebook Registration
+
+  Scenario Outline: Successful registration with valid credentials
+    Given I open the registration page
+    When I type "<firstName>" into the First Name field
+    And I type "<lastName>" into the Last Name field
+    And I type "<mobileNumber>" into the Mobile Number field
+    And I type "<password>" into the Password field
+    Then I should be registered successfully
+
+  Examples:
+    | firstName | lastName | mobileNumber | password    |
+    | Ramesh    | Kumar    | 9876543210   | test123    |
+    | Suresh    | Patel    | 9432156789   | test456    |
+    | Mahesh    | Jain     | 8765432109   | test789    |
+
+import { Given, When, Then, Before, After } from '@cucumber/cucumber';
+import { chromium, Browser, Page } from 'playwright';
+import { expect } from '@playwright/test';
+
+let browser: Browser;
+let page: Page;
+
+Before(async function() {
+  browser = await chromium.launch();
+  page = await browser.newPage();
+});
+
+After(async function() {
+  await page.close();
+  await browser.close();
+});
+
+Given('I open the registration page', async function() {
+  await page.goto('https://www.facebook.com/reg/?entry_point=login&next=');
+  await page.waitForLoadState('networkidle');
+});
+
+When('I type {string} into the First Name field', async function(firstName: string) {
+  const firstNameInput = page.locator('input:nth-child(1)');
+  await firstNameInput.waitFor();
+  await firstNameInput.fill(firstName);
+});
+
+When('I type {string} into the Last Name field', async function(lastName: string) {
+  const lastNameInput = page.locator('input:nth-child(2)');
+  await lastNameInput.waitFor();
+  await lastNameInput.fill(lastName);
+});
+
+When('I type {string} into the Mobile Number field', async function(mobileNumber: string) {
+  const mobileNumberInput = page.locator('input:nth-child(3)');
+  await mobileNumberInput.waitFor();
+  await mobileNumberInput.fill(mobileNumber);
+});
+
+When('I type {string} into the Password field', async function(password: string) {
+  const passwordInput = page.locator('input:nth-child(4)');
+  await passwordInput.waitFor();
+  await passwordInput.fill(password);
+});
+
+Then('I should be registered successfully', async function() {
+  // Add your logic to verify successful registration
+  await page.waitForTimeout(2000); // wait for 2 seconds
+  const success = await page.isVisible('text=Account created successfully');
+  expect(success).toBeTruthy();
+});
