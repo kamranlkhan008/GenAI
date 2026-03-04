@@ -1,0 +1,49 @@
+package com.testleaf.pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
+/**
+ * Page Object for Login Page
+ */
+public class LoginPage {
+    private RemoteWebDriver driver;
+    private WebDriverWait wait;
+
+    public LoginPage(RemoteWebDriver driver) {
+        this.driver = driver;
+        this.wait = new WebDriverWait(driver, 30);
+    }
+
+    /**
+     * This method will enter the username in the username field
+     * @param username
+     * @return LoginPage
+     */
+    public LoginPage enterUsername(String username) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("username"))).sendKeys(username);
+        return this;
+    }
+
+    /**
+     * This method will enter the password in the password field
+     * @param password
+     * @return LoginPage
+     */
+    public LoginPage enterPassword(String password) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("password"))).sendKeys(password);
+        return this;
+    }
+
+    /**
+     * This method will click on the login button
+     * @return LoginPage
+     */
+    public LoginPage clickLoginButton() {
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("Login"))).click();
+        return this;
+    }
+}
