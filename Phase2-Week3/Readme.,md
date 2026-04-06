@@ -1,0 +1,611 @@
+# RAG MongoDB Demo - Complete Guide
+
+Welcome! This is a **Retrieval-Augmented Generation (RAG) system** that helps you search for test cases and user stories using both **AI embeddings** and **smart search technologies**. Don't worry if you're new to programming—this guide will explain everything step by step! 🚀
+
+---
+
+## 📚 Table of Contents
+
+1. [What is This Project?](#what-is-this-project)
+2. [Key Features](#key-features)
+3. [Before You Start](#before-you-start)
+4. [Installation & Setup](#installation--setup)
+5. [How to Use the Application](#how-to-use-the-application)
+6. [Project Structure](#project-structure)
+7. [Understanding Key Concepts](#understanding-key-concepts)
+8. [Troubleshooting](#troubleshooting)
+9. [API Reference](#api-reference)
+
+---
+
+## 🎯 What is This Project?
+
+Imagine you have thousands of test cases in your organization. Now imagine being able to **search through them intelligently using natural language** (like asking a question in plain English) rather than using keywords or filters.
+
+This project does exactly that! It:
+- **Stores** test cases and user stories in MongoDB Atlas
+- **Converts text into AI embeddings** (mathematical representations that capture meaning)
+- **Searches** using multiple intelligent methods (keyword search, semantic search, hybrid search)
+- **Ranks** results by relevance
+- **Summarizes** results in plain English
+
+### Real-World Example:
+> You ask: "How do I test user login with invalid credentials?"
+> 
+> The system finds ALL relevant test cases, even if they use different wording like "authentication failure" or "incorrect password handling"
+
+---
+
+## ✨ Key Features
+
+### 1. **Data Management**
+- Upload test cases from Excel files
+- Convert data to JSON format automatically
+- Upload user stories directly
+- View all uploaded data
+
+### 2. **AI Embeddings** 
+- Generate embeddings using **Mistral AI** (cheap and fast!)
+- Batch process thousands of test cases
+- Track processing progress and costs
+- Support for both regular and user story embeddings
+
+### 3. **Multiple Search Methods**
+- **BM25 Search**: Traditional keyword-based search (fast and reliable)
+- **Vector Search**: AI-powered semantic search (understands meaning)
+- **Hybrid Search**: Combines both methods for best results
+- **Reranking**: Uses advanced AI to sort results by quality
+
+### 4. **Query Processing**
+- **Query Preprocessing**: Normalizes your search queries using:
+  - Abbreviation expansion (e.g., "pwd" → "password")
+  - Synonym expansion (e.g., "bug" → "defect", "issue", "error")
+  - Text normalization
+- **Summarization**: AI summarizes search results
+- **Deduplication**: Removes duplicate results
+
+### 5. **Settings Management**
+- Configure database and collection names
+- Manage index names
+- Customize search behavior
+
+---
+
+## 🛠️ Before You Start
+
+### Prerequisites (What You Need Installed)
+
+1. **Node.js** (v16 or higher)
+   - Download from: https://nodejs.org/
+   - This is the runtime that runs JavaScript code
+   
+2. **MongoDB Atlas Account** (FREE!)
+   - Sign up at: https://www.mongodb.com/cloud/atlas
+   - Create a free cluster (M0 tier is free forever)
+   - This is where your data will be stored in the cloud
+
+3. **API Keys** (FREE!)
+   - **Mistral AI**: https://console.mistral.ai/ (for embeddings)
+   - **Groq AI**: https://console.groq.com/ (for reranking/summarization)
+
+4. **Code Editor**
+   - VS Code recommended: https://code.visualstudio.com/
+
+---
+
+## 📦 Installation & Setup
+
+### Step 1: Clone or Download the Project
+
+```bash
+# Navigate to your projects folder
+cd path/to/your/project
+```
+
+### Step 2: Install Dependencies
+
+Install all required packages:
+
+```bash
+# Install main dependencies
+npm install
+
+# Install client dependencies (React)
+cd client
+npm install
+cd ..
+```
+
+This downloads all the libraries the project needs from the internet.
+
+### Step 3: Create Your `.env` File
+
+The `.env` file stores **sensitive information** like passwords and API keys. **Never share this file!**
+
+Create a file named `.env` in the root directory with this content:
+
+```env
+# MongoDB Connection String
+MONGODB_URI="mongodb+srv://USERNAME:PASSWORD@cluster.mongodb.net/?appName=Cluster0"
+
+# Database Configuration
+DB_NAME="db_stories_tests"
+COLLECTION_NAME="test_cases"
+VECTOR_INDEX_NAME="vector_index"
+BM25_INDEX_NAME="bm25_search"
+
+# User Stories Configuration
+USER_STORIES_COLLECTION_NAME="user_stories"
+USER_STORIES_VECTOR_INDEX_NAME="vector_index_user_story"
+
+# Mistral AI Configuration (for embeddings)
+MISTRAL_API_KEY="your-mistral-api-key-here"
+MISTRAL_EMBEDDING_MODEL="mistral-embed"
+
+# Groq AI Configuration (for reranking/summarization)
+GROQ_API_KEY="your-groq-api-key-here"
+GROQ_RERANK_MODEL="openai/gpt-oss-120b"
+GROQ_SUMMARIZATION_MODEL="openai/gpt-oss-120b"
+```
+
+### Step 4: Get Your MongoDB Connection String
+
+1. Go to [MongoDB Atlas](https://cloud.mongodb.com/)
+2. Log in to your account
+3. Click "Connect" on your cluster
+4. Choose "Drivers" → "Node.js"
+5. Copy the connection string
+6. Replace `USERNAME`, `PASSWORD`, and cluster info in your `.env` file
+
+### Step 5: Get Your API Keys
+
+**For Mistral AI:**
+1. Go to https://console.mistral.ai/
+2. Create an account
+3. Go to "API Keys"
+4. Copy your API key to `MISTRAL_API_KEY` in `.env`
+
+**For Groq AI:**
+1. Go to https://console.groq.com/
+2. Create an account
+3. Go to "API Keys"
+4. Copy your API key to `GROQ_API_KEY` in `.env`
+
+### Step 6: Create MongoDB Indexes
+
+Before creating embeddings, MongoDB needs to know how to organize search indexes. This is done through the MongoDB Atlas UI:
+
+1. Go to MongoDB Atlas
+2. Click on your cluster
+3. Go to "Search" (or "Atlas Search")
+4. Create the vector index as described in the online docs
+
+---
+
+## 🚀 How to Use the Application
+
+### Starting the Application
+
+Open your terminal and run:
+
+```bash
+npm run dev
+```
+
+This starts **both** the backend server and frontend app:
+- **Backend** (server): http://localhost:3001
+- **Frontend** (UI): http://localhost:3000
+
+### What Each Section Does
+
+#### 1. **Data Management** 📁
+
+**Convert Excel to JSON:**
+- Upload an Excel file containing test cases
+- The app automatically converts it to JSON format
+- Download the converted file
+
+**Upload Data:**
+- Upload Excel or JSON files of test cases
+- Upload user stories separately
+
+#### 2. **Create Embeddings** 🤖
+
+**What are embeddings?**
+Embeddings are like fingerprints of text—they capture the **meaning** of text in a format that AI can work with.
+
+**Process:**
+1. Go to "Create Embeddings"
+2. Select your data files
+3. Choose "Batch Processing" (it's faster!)
+4. Click "Create Embeddings"
+5. Track progress with the progress bar
+6. Your data is now stored with embeddings in MongoDB!
+
+#### 3. **Search Your Data** 🔍
+
+**Query Search (Vector):**
+- Type your question in natural language
+- Get results sorted by relevance
+- Click on results to see full details
+
+**BM25 Search (Keyword):**
+- Traditional search method
+- Good for exact matches and keywords
+
+**Hybrid Search:**
+- Combines keyword + semantic search
+- Best of both worlds!
+
+**Reranking:**
+- Reranks results using advanced AI
+- Gets the most relevant results to the top
+
+#### 4. **Process Queries** ⚙️
+
+**Query Preprocessing:**
+- Cleans up your search query
+- Expands abbreviations (e.g., pwd → password)
+- Expands synonyms (e.g., bug → issue)
+
+**Summarization:**
+- Summarizes search results
+- Removes duplicate results
+
+#### 5. **Settings** ⚙️
+
+- Configure which database to use
+- Configure which collections to search
+- View health status of your connection
+
+---
+
+## 📁 Project Structure
+
+Understanding the folder structure will help you navigate the code:
+
+```
+rag-mongo-demo-v8/
+│
+├── 📄 README.md                          ← You are here!
+├── 📄 package.json                       ← Project dependencies
+├── 📄 .env                              ← Your API keys (create this!)
+│
+├── 📁 server/
+│   └── index.js                         ← Main backend server (all API endpoints)
+│
+├── 📁 client/                           ← React frontend application
+│   ├── package.json
+│   ├── public/
+│   │   └── index.html                   ← Main HTML page
+│   └── src/
+│       ├── App.js                       ← Main app component
+│       ├── App.css                      ← Styling
+│       ├── index.js                     ← Entry point
+│       └── components/
+│           ├── data/                    ← Data upload & conversion
+│           ├── search/                  ← Search components (BM25, Vector, Hybrid)
+│           ├── processing/              ← Query preprocessing, summarization
+│           └── settings/                ← Settings page
+│
+├── 📁 src/
+│   ├── config/                          ← Search index configurations (JSON)
+│   │   ├── testcases-bm25-index.json
+│   │   └── testcases-vector-index.json
+│   ├── data/                            ← Sample data files
+│   │   ├── converted-*.json             ← Converted test cases
+│   │   └── stories-*.json               ← User stories
+│   └── scripts/
+│       ├── data-conversion/             ← Convert Excel to JSON
+│       ├── embeddings/                  ← Generate embeddings using Mistral AI
+│       ├── query-preprocessing/         ← Preprocess search queries
+│       ├── search/                      ← All search implementations
+│       └── utilities/                   ← Helper functions (API calls, etc.)
+│
+└── 📁 uploads/                          ← Temporary folder for uploaded files
+```
+
+### Key Files Explained
+
+| File | Purpose |
+|------|---------|
+| `server/index.js` | The heart of the backend—contains all API endpoints your React app calls |
+| `client/src/App.js` | Main React component that shows the sidebar and different pages |
+| `src/scripts/embeddings/create-embeddings-batch-mistral.js` | Converts test cases into embeddings using Mistral AI |
+| `src/scripts/search/*.js` | Implements different search algorithms (BM25, Vector, etc.) |
+| `src/scripts/query-preprocessing/queryPreprocessor.js` | Cleans and enhances search queries |
+
+---
+
+## 🧠 Understanding Key Concepts
+
+### 1. **What are Embeddings?**
+
+An embedding is a way to represent text as numbers that AI can understand.
+
+**Simple example:**
+```
+Text: "The cat sat on the mat"
+Embedding: [0.1, -0.5, 0.8, 0.3, ... thousand more numbers ...]
+```
+
+**What's cool?** Similar texts have similar embeddings!
+```
+"cat on mat"          → [0.1, -0.5, 0.8, 0.3, ...]  ← Similar
+"The sleeping cat"    → [0.1, -0.4, 0.85, 0.2, ...] ← Similar
+"The car engine"      → [0.9, 0.2, -0.5, 0.8, ...]  ← Different
+```
+
+This is why semantic search works!
+
+### 2. **Search Methods Explained**
+
+**BM25 (Keyword Search):**
+- Looks for exact words you typed
+- Fast and reliable
+- Good if you know specific keywords
+```
+Search: "login button" → Finds documents with "login" AND "button"
+```
+
+**Vector Search (Semantic Search):**
+- Uses embeddings to find meaning
+- Understands synonyms and context
+- Slower but smarter
+```
+Search: "How to sign in?" → Finds "user authentication", "login", "credentials"
+```
+
+**Hybrid Search:**
+- Combines both methods
+- Takes top 50 keyword results + top 50 semantic results
+- Merges them intelligently
+- Usually the best option!
+
+**Reranking:**
+- Takes your search results
+- Uses advanced AI to sort by relevance
+- Makes sure the best results are first
+
+### 3. **Batch Processing**
+
+Why does the project use "batches"?
+
+When you have 10,000 test cases:
+- Sending 1 by 1 to the API = Very slow (10,000 requests)
+- Sending in batches of 50 = Much faster (200 requests)
+
+The project uses batch processing to:
+- Be efficient (fewer API calls)
+- Be cheap (fewer API calls = less cost)
+- Show progress (you know how many are done)
+
+### 4. **Query Preprocessing**
+
+Before searching, the system "cleans up" your query:
+
+```
+Your input:          "pwd reset issue"
+Abbreviation expand: "password reset issue" (pwd → password)
+Synonym expand:      "password reset issue/problem/error/defect"
+Normalized:          "password reset issue / password reset problem / ..."
+```
+
+This makes searches much better!
+
+---
+
+## 🐛 Troubleshooting
+
+### Error: "Failed to validate database/collection"
+
+**Cause:** MongoDB Atlas database or collection doesn't exist yet
+
+**Solutions:**
+1. Create them manually in MongoDB Atlas
+2. Or upload data first—it will create them automatically
+
+```bash
+# Check MongoDB connection
+nslookup cluster0.8fx1c9a.mongodb.net
+```
+
+### Error: "Cannot find module"
+
+**Cause:** Dependencies not installed
+
+**Solution:**
+```bash
+npm install
+```
+
+### Error: "API Key Invalid"
+
+**Cause:** Wrong API key in `.env` file
+
+**Solutions:**
+1. Double-check your API key hasn't been copied with extra spaces
+2. Verify you're using the right API key (not the wrong service)
+3. Test the API key directly on the API's console
+
+### Application won't start
+
+**Check:**
+1. Node.js installed? `node --version`
+2. Dependencies installed? Run `npm install` again
+3. `.env` file exists in root directory?
+4. Ports 3000 and 3001 are not in use
+
+---
+
+## 🔌 API Reference
+
+Your backend server provides APIs that the React frontend uses. Here are the main ones:
+
+### Data Management APIs
+
+**Upload files:**
+```
+POST /api/upload
+Body: FormData with files and metadata
+```
+
+**Convert Excel to JSON:**
+```
+POST /api/convert-excel
+Body: FormData with .xlsx file
+```
+
+### Embeddings APIs
+
+**Create embeddings (regular):**
+```
+POST /api/create-embeddings
+Body: { files: ["file1.json", "file2.json"] }
+```
+
+**Create embeddings (fast batch):**
+```
+POST /api/create-embeddings-batch
+Body: { 
+  files: ["file1.json"], 
+  scriptName: "create-embeddings-batch-mistral.js",
+  jobType: "embeddings"
+}
+```
+
+### Search APIs
+
+**Vector/Semantic Search:**
+```
+POST /api/search/vector
+Body: { query: "login test", limit: 10 }
+Response: [{ id, title, description, score, embedding }, ...]
+```
+
+**BM25/Keyword Search:**
+```
+POST /api/search/bm25
+Body: { query: "login test", limit: 10 }
+Response: [{ id, title, description, score }, ...]
+```
+
+**Hybrid Search:**
+```
+POST /api/search/hybrid
+Body: { query: "login test", limit: 10 }
+Response: [Merged results from Vector + BM25]
+```
+
+**Reranked Search:**
+```
+POST /api/search/rerank
+Body: { query: "login test", limit: 10 }
+Response: [Results reranked by AI]
+```
+
+### Utility APIs
+
+**Health Check:**
+```
+GET /api/health
+Response: { status: "ok", timestamp: "..." }
+```
+
+**Get job status:**
+```
+GET /api/jobs/:jobId
+Response: { id, status, progress, eta, created, started, completed }
+```
+
+---
+
+## 🎓 Learning Resources
+
+Want to learn more about these technologies?
+
+### About RAG (Retrieval-Augmented Generation):
+- https://en.wikipedia.org/wiki/Prompt_engineering#Retrieval-augmented_generation
+
+### About MongoDB:
+- https://docs.mongodb.com/manual/
+- MongoDB has a free tier forever!
+
+### About AI Embeddings:
+- https://platform.openai.com/docs/guides/embeddings
+- https://docs.mistral.ai/capabilities/embeddings/
+
+### About React:
+- https://react.dev/ (Official React tutorial)
+
+### About Express.js (backend framework):
+- https://expressjs.com/
+
+---
+
+## 📞 Common Questions
+
+### Q: Is it free to use this project?
+A: The project code is free, but you'll pay for:
+- MongoDB Atlas Vector Search (very cheap free tier available)
+- Mistral AI Embeddings (approximately $0.11 per 1M tokens—very affordable!)
+- Groq AI Reranking (free tier available)
+
+### Q: How much data can I search?
+A: MongoDB Atlas free tier gives you 512MB storage. That's ~100,000 test cases!
+
+### Q: Can I modify the search algorithms?
+A: Yes! All search code is in `src/scripts/search/`. You can modify and experiment!
+
+### Q: What if I want to use different AI models?
+A: You can replace Mistral AI with OpenAI, Google PaLM, or others that support embeddings. Just update the code and `.env`!
+
+### Q: Is my data private?
+A: Yes! Your data goes to **your** MongoDB cluster. Only you have access (protected by username/password).
+
+---
+
+## 🚀 Next Steps
+
+1. Complete the [Installation & Setup](#installation--setup) section
+2. Start the app: `npm run dev`
+3. Upload some test case data
+4. Create embeddings
+5. Try different search methods
+6. Explore the code files to understand how it works!
+
+---
+
+## 📝 Notes for Beginners
+
+- **Don't be afraid to break things!** It's how you learn. Everything is reversible.
+- **Read error messages carefully.** They usually tell you exactly what's wrong.
+- **Google is your friend.** If you get stuck, search for the error message.
+- **Take your time understanding one component at a time.** Don't try to understand everything at once!
+
+---
+
+## 💡 Tips for Success
+
+1. **Start simple:** Upload a small Excel file first (5-10 test cases)
+2. **Test each feature:** Try each search method one by one
+3. **Read the console logs:** They tell you what's happening behind the scenes
+4. **Keep your API keys safe:** Never share your `.env` file
+5. **Monitor API usage:** Check Mistral AI and Groq dashboards to see costs
+
+---
+
+## 📄 License & Credits
+
+This project demonstrates RAG architecture using:
+- **MongoDB Atlas** for vector search
+- **Mistral AI** for embeddings
+- **Groq** for reranking/summarization
+- **React** for the interface
+- **Express.js** for the backend
+
+---
+
+**Happy Learning! 🎉**
+
+If you have questions, check the troubleshooting section or feel free to explore the code files. Each file has comments explaining what it does!
